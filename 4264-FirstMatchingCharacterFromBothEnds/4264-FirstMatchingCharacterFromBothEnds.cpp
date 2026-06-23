@@ -1,0 +1,13 @@
+// Last updated: 6/24/2026, 3:27:25 AM
+class Solution {
+public:
+    int firstMatchingIndex(string s) {
+        int i = 0, j = s.size() - 1;
+        while(i <= j){
+            if(s[i] == s[j]) return i;
+            i++;
+            j--;
+        }
+        return -1;
+    }
+};
