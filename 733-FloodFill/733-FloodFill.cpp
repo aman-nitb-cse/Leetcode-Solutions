@@ -1,15 +1,41 @@
-// Last updated: 6/25/2026, 11:36:51 PM
-class Solution {
-public:
-    vector<vector<int>> floodFill(vector<vector<int>>& img, int r, int c, int color) {
-        if(img[r][c] == color) return img;
-        int old = img[r][c];
-        img[r][c] = color;
+// Last updated: 6/29/2026, 5:23:34 PM
+using ll = long long;
 
-        if(r && img[r - 1][c] == old) floodFill(img, r - 1, c, color);
-        if(c && img[r][c - 1] == old) floodFill(img, r, c - 1, color);
-        if(r != img.size() - 1 && img[r + 1][c] == old) floodFill(img, r + 1, c, color);
-        if(c != img[0].size() - 1 && img[r][c + 1] == old) floodFill(img, r, c + 1, color);
-        return img;
+    ll dp[20][2][2];
+
+    ll digitDP(string &s, int i, int tight, int started){
+
+        if(i == s.size()) return 1; // modify
+
+        auto &_dp = dp[i][tight][started];
+
+        if(_dp != -1) return _dp;
+
+        _dp = 0;
+
+        char limit = tight ? s[i] : '9';
+
+        for(char d = '0'; d <= limit; d++){
+
+            _dp += digitDP(
+                s,
+                i + 1,
+                tight && (d == limit),
+                started || d != '0'
+            );
+            
+        }
+
+        return _dp;
     }
-};
+
+    ll count(ll x){
+
+        if(x < 0) return 0;
+
+        string s = to_string(x);
+
+        memset(dp, -1, sizeof(dp));
+
+        return digitDP(s, 0, 1, 0);
+    }
