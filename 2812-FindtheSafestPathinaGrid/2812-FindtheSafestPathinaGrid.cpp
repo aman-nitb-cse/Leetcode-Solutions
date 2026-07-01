@@ -1,4 +1,4 @@
-// Last updated: 7/1/2026, 9:03:11 PM
+// Last updated: 7/1/2026, 9:07:18 PM
 using ll = long long;
 
     ll dp[20][2][2];
