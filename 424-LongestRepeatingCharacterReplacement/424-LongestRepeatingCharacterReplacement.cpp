@@ -1,21 +1,41 @@
-// Last updated: 8/20/2026, 9:06:07 PM
-class Solution {
-public:
-    int characterReplacement(string w, int k) {
-        int freq[26] = {0};
-        int s = 0, e = -1, ans = 0;
-        while(e < (int)w.size()){
-            int req = (e - s + 1) - *ranges::max_element(freq);
+// Last updated: 10/15/2026, 12:05:46 AM
+using ll = long long;
 
-            if(req > k){ // shrink
-                freq[w[s++] - 'A']--;
-            }
-            else { // expand
-                e++;
-                ans = max(ans, e - s);
-                if(e < w.size()) freq[w[e] - 'A']++;
-            }
+    ll dp[20][2][2];
+
+    ll digitDP(string &s, int i, int tight, int started){
+
+        if(i == s.size()) return 1; // modify
+
+        auto &_dp = dp[i][tight][started];
+
+        if(_dp != -1) return _dp;
+
+        _dp = 0;
+
+        char limit = tight ? s[i] : '9';
+
+        for(char d = '0'; d <= limit; d++){
+
+            _dp += digitDP(
+                s,
+                i + 1,
+                tight && (d == limit),
+                started || d != '0'
+            );
+            
         }
-        return ans;
+
+        return _dp;
     }
-};
+
+    ll count(ll x){
+
+        if(x < 0) return 0;
+
+        string s = to_string(x);
+
+        memset(dp, -1, sizeof(dp));
+
+        return digitDP(s, 0, 1, 0);
+    }
